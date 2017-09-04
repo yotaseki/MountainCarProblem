@@ -1,5 +1,6 @@
 function UpdateScene(Sim,Title)
 % アニメーションを更新する関数
+figure(1);
 clf
 hold on
 mapX = -5:pi/100:5;
