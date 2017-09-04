@@ -1,4 +1,4 @@
-function UpdateScene(Sim,Title)
+function UpdateScene(carX,Title)
 % アニメーションを更新する関数
 figure(1);
 clf
@@ -9,12 +9,13 @@ plot(mapX,mapY);
 xlim([-1.1 0.5]);
 t = title(Title);
 set(t,'FontSize',16);
-carY = Map(Sim.car.x);
-drawCar(Sim.car.x, carY);
+carY = Map(carX);
+drawCar(carX, carY);
 
-goalY = Map(Sim.goal.x);
-drawGoal(Sim.goal.x, goalY)
-pause(0.02);
+goalX = 0.5;
+goalY = Map(0.5);
+drawGoal(goalX, goalY)
+pause(0.01);
     function drawCar(x,y)
         % カートの描画
         plot(x,y,'or','LineWidth',4);
@@ -23,5 +24,4 @@ pause(0.02);
         % ゴール地点を描画
         plot(x,y,'--gs','LineWidth',2,'MarkerSize',5,'Color',[0,0,1])
     end
-
 end
