@@ -1,5 +1,6 @@
 function [Car, Env] = ResetSimulation
 %ResetSimulation この関数の概要をここに記述
+
 Car.x = -0.5;           % 台車　初期位置
 Car.m = 0.2;            % [kg]
 Car.a = 0;              % 加速度

@@ -5,8 +5,6 @@ function theta = LeastSquaresPolicyIterations(L, M, T, B, options )
 %   T        ;ステップ数
 %   B = length(options.centers); % 基底関数の数
 nactions = 3; % 行動数
-paction = 0;
-pstate = 0;
 % デザイン行列 ベクトル モデルパラメータの初期化
 X = zeros(M*T,B*nactions);
 r = zeros(M*T,1);
@@ -55,8 +53,9 @@ for l=1:L
             car.a = car.Actions(action);
             car.v = car.v + (-9.8*car.m*cos(3*car.x) + car.a/car.m - env.k*car.v)*env.dt;
             car.x = car.x + car.v*env.dt;
-            if and(not(rem(l,L)) ,not(rem(m,M)))
-                UpdateScene(state(1),"L="+num2str(l)+",M="+num2str(m));
+            if and(not(rem(l,1)) ,not(rem(m,M)))
+            %if and(l>L-5, m>M-2)
+                UpdateScene(state(1),"Policy="+num2str(l)+",Episode="+num2str(m));
             end
             if t>1
                 % 現在の状態に関する基底関数の政策に関する平均
@@ -84,23 +83,27 @@ for l=1:L
     MaxR = [MaxR max(r)];
     AvgR = [AvgR,mean(r)];
     Dsum = [Dsum, dr/M];
+    % グラフ
+    if(l>=2)
+    figure(2);
+    subplot(3,1,1);
+    plot(1:l, MaxR);
+    title('Max R');
+    subplot(3,1,2);
+    plot(1:l, AvgR);
+    title('Avg.R');
+    subplot(3,1,3);
+    plot(1:l, Dsum);
+    title('Dsum');
+    end
 end
-
-% グラフ
-figure(2);
-subplot(3,1,1);
-plot(1:L, MaxR);
-title('Max R');
-subplot(3,1,2);
-plot(1:L, AvgR);
-title('Avg.R');
-subplot(3,1,3);
-plot(1:L, Dsum);
-title('Dsum');
 
     function R=Reward(x)
     % 報酬関数
-    
-    R = 1/(1+(0.5-x).^2);
+        R = 1/(1+(0.5-min(x,0.5)).^2);
+    end
+
+    function R=Reward2nd(x)
+        R = sin(x) * (1/(1+(0.5-min(x,0.5)).^2));
     end
 end
